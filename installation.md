@@ -105,7 +105,4 @@ Task 4.4b requires CUDA and should be completed on **Google Colab** with GPU run
 
 1. **Upload your Module-4 files to Google Colab**
 2. **Enable GPU runtime**: Runtime → Change runtime type → Hardware accelerator: GPU
-3. **Install in Colab**:
-```bash
-!pip install -e ".[cuda]"
-```
+3. **Install in Colab**: Follow the [Module-3 Colab guide](https://colab.research.google.com/drive/1gyUFUrCXdlIBz9DYItH9YN3gQ2DvUMsI?usp=sharing) for CUDA setup, then install Module-4 with CUDA support:
