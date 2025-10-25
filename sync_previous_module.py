@@ -1,50 +1,72 @@
 """
-Description:
-Note: Make sure that both the new and old module files are in same directory!
+Sync Previous Module Files
 
-This script helps you sync your previous module works with current modules.
-It takes 2 arguments, source_dir_name and destination_dir_name.
-All the files which will be moved are specified in files_to_sync.txt as newline separated strings
+This script helps you sync files from your previous module to the current module.
+It copies files specified in 'files_to_sync.txt' from the source directory to the destination directory.
 
-Usage: python sync_previous_module.py <source_dir_name> <dest_dir_name>
+Usage: python sync_previous_module.py <source_directory> <destination_directory>
 
-Ex:  python sync_previous_module.py mle-module-0-sauravpanda24 mle-module-1-sauravpanda24
+Examples:
+    python sync_previous_module.py ./my-awesome-module-3 ./my-awesome-module-4
+    python sync_previous_module.py ~/assignments/Module-3-unicorn_ninja ~/assignments/Module-4-unicorn_ninja
 """
 import os
 import shutil
 import sys
 
-if len(sys.argv) != 3:
-    print(
-        "Invalid argument count! Please pass source directory and destination directory after the file name"
-    )
-    sys.exit()
+def print_usage():
+    """Print usage information and examples."""
+    print(__doc__)
 
-# Get the users path to evaluate the username and root directory
-current_path = os.getcwd()
-grandparent_path = "/".join(current_path.split("/")[:-1])
+def read_files_to_sync():
+    """Read the list of files to sync from files_to_sync.txt"""
+    try:
+        with open("files_to_sync.txt", "r") as f:
+            return f.read().splitlines()
+    except FileNotFoundError:
+        print("Error: files_to_sync.txt not found!")
+        sys.exit(1)
 
-print("Looking for modules in : ", grandparent_path)
+def sync_files(source, dest, files_to_move):
+    """Copy files from source to destination directory."""
+    if not os.path.exists(source):
+        print(f"Error: Source directory '{source}' does not exist!")
+        sys.exit(1)
 
-# List of files which we want to move
-f = open("files_to_sync.txt", "r+")
-files_to_move = f.read().splitlines()
-f.close()
+    if not os.path.exists(dest):
+        print(f"Error: Destination directory '{dest}' does not exist!")
+        sys.exit(1)
 
-# get the source and destination from arguments
-source = sys.argv[1]
-dest = sys.argv[2]
-
-# copy the files from source to destination
-try:
+    copied_files = 0
     for file in files_to_move:
-        print(f"Moving file : ", file)
-        shutil.copy(
-            os.path.join(grandparent_path, source, file),
-            os.path.join(grandparent_path, dest, file),
-        )
-    print(f"Finished moving {len(files_to_move)} files")
-except Exception as e:
-    print(
-        "Something went wrong! please check if the source and destination folders are present in same folder"
-    )
+        source_path = os.path.join(source, file)
+        dest_path = os.path.join(dest, file)
+
+        if not os.path.exists(source_path):
+            print(f"Warning: File '{file}' not found in source directory, skipping")
+            continue
+
+        try:
+            os.makedirs(os.path.dirname(dest_path), exist_ok=True)
+            shutil.copy(source_path, dest_path)
+            print(f"Copied: {file}")
+            copied_files += 1
+        except Exception as e:
+            print(f"Error copying '{file}': {e}")
+
+    print(f"Finished copying {copied_files} files")
+
+def main():
+    if len(sys.argv) != 3:
+        print("Error: Invalid number of arguments!")
+        print_usage()
+        sys.exit(1)
+
+    source = sys.argv[1]
+    dest = sys.argv[2]
+    files_to_move = read_files_to_sync()
+
+    sync_files(source, dest, files_to_move)
+
+if __name__ == "__main__":
+    main()
