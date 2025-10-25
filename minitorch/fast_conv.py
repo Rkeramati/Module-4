@@ -63,6 +63,14 @@ def _tensor_conv1d(
     `reverse` decides if weight is anchored left (False) or right.
     (See diagrams)
 
+    Implementation hints:
+    - Use nested loops over batch, output channels, output width, input channels, and kernel width
+    - Use prange for appropriate outer loops to enable parallelization
+    - Calculate input position based on output position and kernel position
+    - Handle reverse flag to determine kernel indexing direction
+    - Apply bounds checking to avoid accessing invalid memory positions
+    - Use provided strides to compute correct memory offsets
+
     Args:
     ----
         out (Storage): storage for `out` tensor.
@@ -90,8 +98,36 @@ def _tensor_conv1d(
     s1 = input_strides
     s2 = weight_strides
 
-    # TODO: Implement for Task 4.1.
-    raise NotImplementedError("Need to implement for Task 4.1")
+    for batch_idx in prange(batch_):
+        for out_ch in prange(out_channels):
+            for out_w in prange(out_width):
+                sum_val = 0.0
+                for in_ch in range(in_channels):
+                    for k_w in range(kw):
+                        if reverse:
+                            w_pos = out_w - k_w
+                        else:
+                            w_pos = out_w + k_w
+                        
+                        if 0 <= w_pos < width:
+                            input_pos = (
+                                batch_idx * s1[0] +
+                                in_ch * s1[1] +
+                                w_pos * s1[2]
+                            )
+                            weight_pos = (
+                                out_ch * s2[0] +
+                                in_ch * s2[1] +
+                                k_w * s2[2]
+                            )
+                            sum_val += input[input_pos] * weight[weight_pos]
+                
+                out_pos = (
+                    batch_idx * out_strides[0] +
+                    out_ch * out_strides[1] +
+                    out_w * out_strides[2]
+                )
+                out[out_pos] = sum_val
 
 
 tensor_conv1d = njit(_tensor_conv1d, parallel=True)
@@ -187,6 +223,13 @@ def _tensor_conv2d(
     `Reverse` decides if weight is anchored top-left (False) or bottom-right.
     (See diagrams)
 
+    Implementation hints:
+    - Use nested loops over batch, output channels, output height, output width, input channels, kernel height, and kernel width
+    - Use prange for appropriate outer loops to enable parallelization
+    - Calculate input positions based on output position and kernel positions
+    - Handle reverse flag to determine kernel indexing direction for both height and width
+    - Apply bounds checking to avoid accessing invalid memory positions for both dimensions
+    - Use provided strides to compute correct memory offsets for 4D tensors
 
     Args:
     ----
@@ -203,7 +246,7 @@ def _tensor_conv2d(
         reverse (bool): anchor weight at top-left or bottom-right
 
     """
-    batch_, out_channels, _, _ = out_shape
+    batch_, out_channels, out_height, out_width = out_shape
     batch, in_channels, height, width = input_shape
     out_channels_, in_channels_, kh, kw = weight_shape
 
@@ -219,8 +262,43 @@ def _tensor_conv2d(
     s10, s11, s12, s13 = s1[0], s1[1], s1[2], s1[3]
     s20, s21, s22, s23 = s2[0], s2[1], s2[2], s2[3]
 
-    # TODO: Implement for Task 4.2.
-    raise NotImplementedError("Need to implement for Task 4.2")
+    for batch_idx in prange(batch_):
+        for out_ch in prange(out_channels):
+            for out_h in prange(out_height):
+                for out_w in prange(out_width):
+                    sum_val = 0.0
+                    for in_ch in range(in_channels):
+                        for k_h in range(kh):
+                            for k_w in range(kw):
+                                if reverse:
+                                    h_pos = out_h - k_h
+                                    w_pos = out_w - k_w
+                                else:
+                                    h_pos = out_h + k_h
+                                    w_pos = out_w + k_w
+                                
+                                if 0 <= h_pos < height and 0 <= w_pos < width:
+                                    input_pos = (
+                                        batch_idx * s10 +
+                                        in_ch * s11 +
+                                        h_pos * s12 +
+                                        w_pos * s13
+                                    )
+                                    weight_pos = (
+                                        out_ch * s20 +
+                                        in_ch * s21 +
+                                        k_h * s22 +
+                                        k_w * s23
+                                    )
+                                    sum_val += input[input_pos] * weight[weight_pos]
+                    
+                    out_pos = (
+                        batch_idx * out_strides[0] +
+                        out_ch * out_strides[1] +
+                        out_h * out_strides[2] +
+                        out_w * out_strides[3]
+                    )
+                    out[out_pos] = sum_val
 
 
 tensor_conv2d = njit(_tensor_conv2d, parallel=True, fastmath=True)
