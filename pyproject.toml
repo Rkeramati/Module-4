@@ -5,17 +5,53 @@ build-backend = "hatchling.build"
 [project]
 name = "minitorch"
 version = "0.5"
+description = "A minimal deep learning library for educational purposes"
+requires-python = ">=3.8"
+dependencies = [
+    "colorama==0.4.6",
+    "hypothesis==6.138.2",
+    "numba>=0.61.2", 
+    "numpy<2.0",
+    "pytest==8.4.1",
+    "pytest-env==1.1.5",
+    "typing_extensions",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pre-commit==4.3.0",
+    "ruff>=0.8.0",
+    "pyright>=1.1.390",
+]
+cuda = [
+    "numba-cuda[cu12]>=0.4.0",
+]
+extra = [
+    "python-mnist",
+    "streamlit==1.48.1",
+    "streamlit-ace",
+    "plotly==5.24.1",
+    "torch>=2.9.0",
+    "datasets==2.4.0",
+    "embeddings==0.0.8",
+    "networkx==3.5",
+    "pydot==1.4.1",
+    "watchdog==1.0.2",
+    "altair==4.2.2",
+]
 
 [tool.pyright]
 include = ["**/minitorch"]
-ignore = [
+exclude = [
     "**/docs",
-    "**/docs/module1/**",
+    "**/docs/module4/**",
     "**/assignments",
     "**/project",
     "**/mt_diagrams",
     "**/.*",
     "*chainrule.py*",
+    "**/minitorch/autodiff.py",
+    "sync_previous_module.py",
 ]
 venvPath = "."
 venv = ".venv"
@@ -30,6 +66,7 @@ reportUnknownLambdaType = "none"
 reportIncompatibleMethodOverride = "none"
 reportPrivateUsage = "none"
 reportMissingParameterType = "error"
+reportMissingImports = "none"
 
 
 [tool.pytest.ini_options]
@@ -61,7 +98,6 @@ markers = [
     "task4_4",
 ]
 [tool.ruff]
-
 exclude = [
     ".git",
     "__pycache__",
@@ -72,10 +108,22 @@ exclude = [
     "**/mt_diagrams/*",
     "**/minitorch/testing.py",
     "**/docs/**/*",
+    "minitorch/optim.py",
+    "minitorch/datasets.py",
+    "minitorch/scalar.py",
+    "minitorch/autodiff.py",
+    "minitorch/module.py",
+    "minitorch/tensor.py",
+    "minitorch/tensor_data.py",
+    "minitorch/tensor_functions.py",
+    "minitorch/tensor_ops.py",
+    "minitorch/fast_ops.py",
+    "minitorch/cuda_ops.py",
+    "sync_previous_module.py",
 ]
 
+[tool.ruff.lint]
 ignore = [
-    "ANN101",
     "ANN401",
     "N801",
     "E203",
@@ -96,7 +144,7 @@ ignore = [
     "D107",
     "D213",
     "ANN204",
-    "ANN102",
+    "D203"
 ]
 select = ["D", "E", "F", "N", "ANN"]
 fixable = [
@@ -147,5 +195,7 @@ fixable = [
 ]
 unfixable = []
 
-[tool.ruff.extend-per-file-ignores]
+[tool.ruff.lint.extend-per-file-ignores]
 "tests/**/*.py" = ["D"]
+"minitorch/scalar_functions.py" = ["ANN001", "ANN201"]
+"minitorch/tensor_functions.py" = ["ANN001", "ANN201"]
