@@ -61,8 +61,14 @@ def _tensor_conv1d(
        `batch, out_channels, width`
 
     `reverse` decides if weight is anchored left (False) or right.
-    (See diagrams)
-
+    (See diagrams)    
+    Implementation hints:
+        - Use nested loops over batch, output channels, output width, input channels, and kernel width
+        - Use prange for appropriate outer loops to enable parallelization
+        - Calculate input position based on output position and kernel position
+        - Handle reverse flag to determine kernel indexing direction
+        - Apply bounds checking to avoid accessing invalid memory positions
+        - Use provided strides to compute correct memory offsets
     Args:
     ----
         out (Storage): storage for `out` tensor.
@@ -187,6 +193,13 @@ def _tensor_conv2d(
     `Reverse` decides if weight is anchored top-left (False) or bottom-right.
     (See diagrams)
 
+    Implementation hints:
+        - Use nested loops over batch, output channels, output height, output width, input channels, kernel height, and kernel width
+        - Use prange for appropriate outer loops to enable parallelization
+        - Calculate input positions based on output position and kernel positions
+        - Handle reverse flag to determine kernel indexing direction for both height and width
+        - Apply bounds checking to avoid accessing invalid memory positions for both dimensions
+        - Use provided strides to compute correct memory offsets for 4D tensors
 
     Args:
     ----
