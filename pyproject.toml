@@ -6,11 +6,11 @@ build-backend = "hatchling.build"
 name = "minitorch"
 version = "0.5"
 description = "A minimal deep learning library for educational purposes"
-requires-python = ">=3.8"
+requires-python = ">=3.8,<3.12"
 dependencies = [
     "colorama==0.4.6",
     "hypothesis==6.138.2",
-    "numba>=0.61.2", 
+    "numba-cuda[cu12]>=0.4.0", ## cu12 is for CUDA 12.0 cu13 is for CUDA 13.0 
     "numpy<2.0",
     "pytest==8.4.1",
     "pytest-env==1.1.5",
@@ -22,9 +22,6 @@ dev = [
     "pre-commit==4.3.0",
     "ruff>=0.8.0",
     "pyright>=1.1.390",
-]
-cuda = [
-    "numba-cuda[cu12]>=0.4.0",
 ]
 extra = [
     "python-mnist",
