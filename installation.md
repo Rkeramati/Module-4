@@ -1,10 +1,15 @@
 # MiniTorch Module 4 Installation
 
-MiniTorch requires Python 3.8 or higher. To check your version of Python, run:
+MiniTorch requires Python 3.11. To check your version of Python, run:
 
 ```bash
 >>> python --version
 ```
+
+If you don't have Python 3.11, install it before proceeding:
+- **Mac**: `brew install python@3.11`
+- **Ubuntu/Debian**: `sudo apt install python3.11`
+- **Windows**: Download from python.org
 
 We recommend creating a global MiniTorch workspace directory that you will use
 for all modules:
@@ -19,14 +24,14 @@ We highly recommend setting up a *virtual environment*. The virtual environment 
 
 **Option 1: Anaconda (Recommended)**
 ```bash
->>> conda create --name minitorch python    # Run only once
+>>> conda create --name minitorch python=3.11    # Run only once
 >>> conda activate minitorch
->>> conda install llvmlite                  # For optimization
+>>> conda install llvmlite                       # For optimization
 ```
 
 **Option 2: Venv**
 ```bash
->>> python -m venv venv          # Run only once
+>>> python3.11 -m venv venv      # Run only once (requires Python 3.11)
 >>> source venv/bin/activate
 ```
 

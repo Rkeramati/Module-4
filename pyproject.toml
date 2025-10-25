@@ -6,11 +6,11 @@ build-backend = "hatchling.build"
 name = "minitorch"
 version = "0.5"
 description = "A minimal deep learning library for educational purposes"
-requires-python = ">=3.8"
+requires-python = ">=3.8,<3.12"
 dependencies = [
     "colorama==0.4.6",
     "hypothesis==6.138.2",
-    "numba>=0.61.2", 
+    "numba>=0.61.2",
     "numpy<2.0",
     "pytest==8.4.1",
     "pytest-env==1.1.5",

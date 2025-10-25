@@ -4,9 +4,9 @@
 
 [![CI](https://github.com/minitorch/minitorch/workflows/CI/badge.svg)](https://github.com/minitorch/minitorch/actions)
 
-* Docs: https://minitorch.github.io/
+* Docs: https://minitorch.github.io
 
-* Overview: https://minitorch.github.io/module4.html
+* Overview: https://minitorch.github.io/module4/module4/
 
 Module 4 extends MiniTorch with convolutional neural network operations to build an image recognition system. You'll implement a version of LeNet on MNIST for digit recognition and 1D convolution for NLP sentiment classification:
 
@@ -82,58 +82,8 @@ pre-commit run --all-files
 - Train a model on Digit classification (MNIST), add logs as `mnist.txt` showing train loss and validation accuracy
 - Implement Conv1D, Conv2D, and Network classes for both training files
 
-## Testing
-
-**Module 4 Tasks:**
-```bash
-pytest -m task4_1  # 1D convolution
-pytest -m task4_2  # 2D convolution
-pytest -m task4_3  # Pooling operations
-pytest -m task4_4  # Advanced NN functions
-```
-
-**CNN Training:**
-```bash
-python project/run_mnist_multiclass.py  # MNIST digit classification
-python project/run_sentiment.py         # SST2 sentiment analysis
-```
-
-**Style Checks:**
-```bash
-pre-commit run --all-files
-ruff check . && pyright
-```
-
-## CNN Applications
-
-**MNIST digit classification with CNNs:**
-- Convolutional feature extraction
-- Spatial pooling for dimension reduction
-- Performance comparison with fully-connected networks
-
-**Expected improvements over fully-connected:**
-- Fewer parameters through weight sharing
-- Translation invariance for image recognition
-- Hierarchical feature learning
-
-## Module Requirements
-
-This module requires files from previous assignments, so make sure to pull them over to your new repo. We recommend getting familiar with `tensor.py`, since you might find some of those functions useful for implementing this module.
-
-Get the required files by running:
-
-```bash
-python sync_previous_module.py <path-to-module-3> <path-to-current-module>
-```
-
-**Required files from Module 3:**
-- All tensor system files and fast operations
-- Module framework and autodifferentiation
-- Training scripts and datasets
 
 ## Resources
 
 - **[Installation Guide](installation.md)**: Setup instructions with MNIST
 - **[Testing Guide](testing.md)**: CNN testing strategies
-- **MiniTorch Docs**: https://minitorch.github.io/
-- **Module 4 Overview**: https://minitorch.github.io/module4.html
