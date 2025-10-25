@@ -1,11 +1,11 @@
 from typing import Tuple
 
 from .tensor import Tensor
-from .tensor_functions import rand
 from typing import Optional
-from .tensor_functions import Function, tensor
-
+from .tensor_functions import Function, rand, tensor
+from . import operators
 from .autodiff import Context
+from .fast_ops import FastOps
 
 
 # List of functions in this file:
