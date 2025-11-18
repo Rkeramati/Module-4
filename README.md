@@ -22,8 +22,7 @@ Module 4 extends MiniTorch with convolutional neural network operations to build
 pip install -e ".[dev,extra]"
 
 # Set up MNIST dataset
-pip install python-mnist
-mnist_get_data.sh
+./get_mnist.sh
 
 # Sync files from Module 3
 python sync_previous_module.py ../Module-3 .
@@ -61,12 +60,12 @@ pre-commit run --all-files
 
 ### Task 4.4: Advanced Neural Network Functions
 **File**: `minitorch/nn.py`
-- Implement `max()`, `softmax()`, `logsoftmax()`, and `dropout()`
+- Implement `max()`, `argmax()`, `softmax()`, `logsoftmax()`, and `dropout()`
 - Implement `maxpool2d()` for max pooling operations
 - Add property tests and ensure gradient computation correctness
 
 ### Task 4.4b: Extra Credit (CUDA Convolution)
-**File**: `minitorch/cuda_conv.py`
+**File**: `minitorch/cuda_conv.py` (Create this file)
 - Implement `conv1d` and `conv2d` on CUDA for efficient GPU processing
 - Critical for large-scale image recognition performance
 - Show output on Google Colab

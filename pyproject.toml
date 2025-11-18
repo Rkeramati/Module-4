@@ -32,11 +32,11 @@ extra = [
     "streamlit-ace",
     "plotly==5.24.1",
     "torch>=2.9.0",
-    "datasets==2.4.0",
+    "datasets==3.0.1",
     "embeddings==0.0.8",
     "networkx==3.5",
     "pydot==1.4.1",
-    "watchdog==1.0.2",
+    "watchdog",
     "altair==4.2.2",
 ]
 

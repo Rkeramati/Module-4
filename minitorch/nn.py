@@ -55,6 +55,7 @@ def avgpool2d(input: Tensor, kernel: Tuple[int, int]) -> Tensor:
     # TODO: Implement for Task 4.3.
     raise NotImplementedError("Need to implement for Task 4.3")
 
+max_reduce = FastOps.reduce(operators.max, -1e9)
 
 class Max(Function):
     @staticmethod
